@@ -8,18 +8,20 @@ import Recognition from './pages/Recognition'
 import Layout from './components/layout/Layout'
 import Profile1 from './pages/Profile1'
 import EmployeesPage from './pages/EmployeesPage'
+import Chat from './pages/Chat'
+import Home from './pages/Home'
 
 function App() {
   return (
     <>
       <div>
-          <Layout>
             <Routes>
-              <Route path="/profile" element={<Profile1/>}/>
-              <Route path="/recognition" element={<Recognition/>}/>
-              <Route path='/employees' element={<EmployeesPage/>}/>
-            </Routes>
-          </Layout>       
+              <Route path='/' element={<Home/>}/>
+              <Route path="/profile" element={<Layout><Profile1/></Layout>}/>
+              <Route path="/recognition" element={<Layout><Recognition/></Layout>}/>
+              <Route path='/employees' element={<Layout><EmployeesPage/></Layout>}/>
+              <Route path='/chat' element={<Layout><Chat/></Layout>}/>
+            </Routes>   
       </div>
     </>
   )
