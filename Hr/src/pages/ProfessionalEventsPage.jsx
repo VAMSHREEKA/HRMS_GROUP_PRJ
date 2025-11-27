@@ -351,7 +351,7 @@ const ProfessionalEventsPage = () => {
 
 
         {/* Main Content */}
-        <div className="md:pl-64 flex flex-col flex-1 w-full">
+        <div className="flex flex-col flex-1 w-full">
           <main className="flex-1">
             <div className="py-4">
               <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
