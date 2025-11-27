@@ -14,6 +14,7 @@ import Login from './pages/LogIn'
 import Dashboard1 from './pages/Dashboard1'
 import ProfessionalEventsPage from './pages/ProfessionalEventsPage'
 import Feed from './pages/Feed'
+import Profile from './pages/Profile'
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
               <Route path='/' element={<Home/>}/>
               <Route path="/login" element={<Login/>}/>
               <Route path="/dashboard" element={<Layout><Dashboard1/></Layout>}/>
-              <Route path="/profile" element={<Layout><Profile1/></Layout>}/>
+              <Route path="/profile" element={<Layout><Profile/></Layout>}/>
               <Route path="/event" element={<Layout><ProfessionalEventsPage/></Layout>}/>
               <Route path="/recognition" element={<Layout><Recognition/></Layout>}/>
               <Route path="/feed" element={<Layout><Feed/></Layout>}/>
