@@ -14,7 +14,7 @@ import Dashboard1 from './pages/Dashboard1'
 import ProfessionalEventsPage from './pages/ProfessionalEventsPage'
 import Feed from './pages/Feed'
 import Profile from './pages/Profile'
-import Login from './pages/LogIn'
+// import Login from './pages/LogIn'
 
 function App() {
   return (
