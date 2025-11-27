@@ -1,7 +1,7 @@
 import { useState } from "react";
 import EmployeesStatistics from "../components/Dashboard1/EmployeesStatistics.jsx";
 import StatsCards from "../components/Dashboard1/StatsCard.jsx";
-// import EmpComposition from "./components/Emp_Composition/emp_comp";
+import EmpComposition from "../components/Dashboard1/Emp_Composition.jsx";
 import MeetingsUI from "../components/Dashboard1/MeetingsUI.jsx";
 
 function Dashboard1() {
@@ -25,9 +25,9 @@ function Dashboard1() {
               <div className="flex-1 w-full lg:max-w-lg">
                 <MeetingsUI />
               </div>
-              {/* <div className="w-full lg:w-48 flex justify-center lg:justify-start">
+              <div className="w-full lg:w-48 flex justify-center lg:justify-start">
                 <EmpComposition />
-              </div> */}
+              </div>
             </div>
           </div>
         )}
