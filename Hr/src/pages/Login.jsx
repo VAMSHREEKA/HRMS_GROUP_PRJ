@@ -79,6 +79,7 @@ export default function Login() {
           aria-hidden="true"
         />
 
+
         {/* Left side - Login form */}
         <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
           <h3 className="text-3xl md:text-4xl font-bold mb-6 text-black">
