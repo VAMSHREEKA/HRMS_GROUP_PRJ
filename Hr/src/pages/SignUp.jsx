@@ -26,7 +26,7 @@ const SignUp = () => {
     return !newErrors.name && !newErrors.email && !newErrors.password;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const robot = document.getElementById("robot");
     const isValid = validate();
@@ -35,12 +35,44 @@ const SignUp = () => {
       return;
     }
     if (isValid) {
-      alert("✅ Account created successfully!");
-      setName("");
-      setEmail("");
-      setPassword("");
-      setErrors({ name: "", email: "", password: "" });
-      if (typeof robot !== "undefined") robot.checked = false;
+      try {
+        const response = await fetch("http://localhost:3000/api/users/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fullname: name,
+            email: email,
+            password: password,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Success - status 201
+          alert("✅ Account created successfully!");
+          setName("");
+          setEmail("");
+          setPassword("");
+          setErrors({ name: "", email: "", password: "" });
+          if (typeof robot !== "undefined") robot.checked = false;
+        } else {
+          // Error - status 400 or 500
+          if (response.status === 400 && data.message === "User already exists") {
+            // Duplicate email
+            setErrors({ ...errors, email: "This email is already registered. Please use a different email or log in." });
+            alert("❌ This email is already registered!");
+          } else {
+            // Other errors
+            alert(`❌ Error: ${data.message || "Failed to create account"}`);
+          }
+        }
+      } catch (error) {
+        console.error("Signup error:", error);
+        alert("❌ Network error. Please check if the backend server is running.");
+      }
     }
   };
 
@@ -108,7 +140,7 @@ const SignUp = () => {
                 <label htmlFor="robot" className="text-sm text-black font-medium cursor-pointer">i am not a robot</label>
               </div>
 
-              <Link to={"/dashboard"}><button type="submit" className="w-full max-w-[400px] bg-[#4a2cf0] text-white py-2 rounded-md font-medium hover:bg-[#3a20d1] transition-all text-sm sm:text-base">create account</button></Link>
+              <button type="submit" className="w-full max-w-[400px] bg-[#4a2cf0] text-white py-2 rounded-md font-medium hover:bg-[#3a20d1] transition-all text-sm sm:text-base">create account</button>
 
               <p className="text-sm text-gray-800 text-center w-full max-w-[400px]">already have an account? <Link to="/login" className="font-bold text-black">log in</Link></p>
             </form>
