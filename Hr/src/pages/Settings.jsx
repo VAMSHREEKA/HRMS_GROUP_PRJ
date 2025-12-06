@@ -3,7 +3,7 @@ import React from 'react';
 const Settings = () => {
   const settingsItems = [
     'Notification',
-    'Dark Mode', 
+    'Dark Mode',
     'Rate App',
     'Share Link',
     'Privacy Policy',
@@ -17,7 +17,7 @@ const Settings = () => {
   return (
     <div className="p-6 animate-fade-in">
       <h1 className="text-2xl font-bold text-gray-800 mb-6 animate-slide-down">Settings</h1>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column - Settings List */}
         <div className="lg:col-span-2 space-y-6">
@@ -42,7 +42,17 @@ const Settings = () => {
           {/* Settings List with Animations */}
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden animate-slide-up">
             {settingsItems.map((item, index) => (
-              <div key={item} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+              <div
+                key={item}
+                className="animate-fade-in"
+                style={{ animationDelay: `${index * 50}ms` }}
+                onClick={async () => {
+                  if (item === 'Logout') {
+                    const { logout } = await import("../services/auth.service.js");
+                    await logout();
+                  }
+                }}
+              >
                 <div className="flex items-center justify-between px-6 py-4 hover:bg-linear-to-r hover:from-blue-50 hover:to-purple-50 cursor-pointer group transition-all duration-300 transform hover:translate-x-2">
                   <div className="flex items-center space-x-4">
                     <div className={`w-2 h-2 rounded-full bg-linear-to-r from-blue-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-all duration-300`}></div>
@@ -69,8 +79,8 @@ const Settings = () => {
               <span>HRMS Dashboard</span>
             </h3>
             <div className="w-full h-48 bg-linear-to-br from-green-50 to-blue-50 rounded-xl border-2 border-dashed border-green-200 overflow-hidden group hover:border-green-300 transition-all duration-500">
-              <img 
-                src="https://amarebe.com/wp-content/uploads/2024/10/HRMS-1.jpg" 
+              <img
+                src="https://amarebe.com/wp-content/uploads/2024/10/HRMS-1.jpg"
                 alt="HRMS Dashboard"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 onError={(e) => {
@@ -93,8 +103,8 @@ const Settings = () => {
               <span>Business Illustration</span>
             </h3>
             <div className="w-full h-48 bg-linear-to-br from-orange-50 to-pink-50 rounded-xl border-2 border-dashed border-orange-200 overflow-hidden group hover:border-orange-300 transition-all duration-500">
-              <img 
-                src="https://www.shutterstock.com/image-vector/procrastinating-businessman-sitting-legs-on-260nw-1348362062.jpg" 
+              <img
+                src="https://www.shutterstock.com/image-vector/procrastinating-businessman-sitting-legs-on-260nw-1348362062.jpg"
                 alt="Procrastinating Businessman"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 onError={(e) => {

@@ -53,11 +53,19 @@ const SignUp = () => {
         if (response.ok) {
           // Success - status 201
           alert("✅ Account created successfully!");
+
+          // Auto-login logic
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+
           setName("");
           setEmail("");
           setPassword("");
           setErrors({ name: "", email: "", password: "" });
           if (typeof robot !== "undefined") robot.checked = false;
+
+          // Redirect to dashboard
+          window.location.href = "/";
         } else {
           // Error - status 400 or 500
           if (response.status === 400 && data.message === "User already exists") {

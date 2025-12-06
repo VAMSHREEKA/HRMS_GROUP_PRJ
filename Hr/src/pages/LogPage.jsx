@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function LogPage() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     const form = document.getElementById("loginForm");
     const emailInput = document.getElementById("Iemail");
@@ -18,7 +18,7 @@ export default function LogPage() {
       togglePassword.textContent = type === "password" ? "Show" : "Hide";
     });
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
       e.preventDefault();
       let isValid = true;
 
@@ -41,9 +41,15 @@ export default function LogPage() {
       }
 
       if (isValid) {
-        alert("Login successful!");
-        form.reset();
-        navigate("/dashboard");
+        try {
+          const { login } = await import("../services/auth.service.js");
+          await login(emailInput.value.trim(), passwordInput.value.trim());
+          alert("Login successful!");
+          form.reset();
+          navigate("/");
+        } catch (error) {
+          alert(error.message);
+        }
       }
     };
 
@@ -62,7 +68,7 @@ export default function LogPage() {
 
         {/* WATERMARK inside card — now moved up */}
         <img
-          src= "flower1.png"
+          src="flower1.png"
           alt="watermark"
           className="
             absolute left-1/2 
@@ -154,9 +160,9 @@ export default function LogPage() {
                 </a>
               </div>
 
-                <button className="mt-4 w-full rounded-full bg-blue-600 text-white px-5 py-2 text-sm font-semibold hover:bg-blue-700">
-                    Log in
-                </button>
+              <button className="mt-4 w-full rounded-full bg-blue-600 text-white px-5 py-2 text-sm font-semibold hover:bg-blue-700">
+                Log in
+              </button>
 
               <div className="text-sm text-gray-600">
                 Don't have an account?{" "}

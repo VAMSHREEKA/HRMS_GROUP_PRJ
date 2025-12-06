@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { createUser, findUserByEmail } from "../models/user.model.js";
+import { findUserByEmail } from "../models/user.model.js";
+import { createUserService } from "../services/user.service.js";
+import { addToken } from "../models/blacklistedTokens.js";
 
 export const signup = async (req, res) => {
     try {
@@ -10,14 +12,7 @@ export const signup = async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        const existingUser = await findUserByEmail(email);
-        if (existingUser) {
-            console.log("⚠️  Duplicate signup attempt for:", email);
-            return res.status(400).json({ message: "User already exists" });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await createUser(fullname, email, hashedPassword);
+        const newUser = await createUserService(fullname, email, password);
 
         console.log("--------------------------------------------------");
         console.log("🆕 NEW USER SIGNUP");
@@ -26,8 +21,13 @@ export const signup = async (req, res) => {
         console.log(`🕒 Time: ${new Date().toLocaleString()}`);
         console.log("--------------------------------------------------");
 
+        const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET || "secret", {
+            expiresIn: "1h",
+        });
+
         res.status(201).json({
             message: "User created successfully",
+            token,
             user: {
                 id: newUser.id,
                 fullname: newUser.fullname,
@@ -36,6 +36,9 @@ export const signup = async (req, res) => {
         });
     } catch (error) {
         console.error("❌ Signup Error:", error.message);
+        if (error.message === "User already exists") {
+            return res.status(400).json({ message: "User already exists" });
+        }
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
@@ -80,6 +83,17 @@ export const login = async (req, res) => {
         });
     } catch (error) {
         console.error("❌ Login Error:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+export const logout = async (req, res) => {
+    try {
+        const token = req.token;
+        await addToken(token);
+        res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+        console.error("❌ Logout Error:", error.message);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
