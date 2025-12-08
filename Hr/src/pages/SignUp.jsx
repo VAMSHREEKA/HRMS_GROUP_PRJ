@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { authService } from "../services/chatService";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -7,6 +8,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ name: "", email: "", password: "" });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const previous = document.body.style.backgroundColor;
@@ -26,7 +28,7 @@ const SignUp = () => {
     return !newErrors.name && !newErrors.email && !newErrors.password;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const robot = document.getElementById("robot");
     const isValid = validate();
@@ -35,12 +37,22 @@ const SignUp = () => {
       return;
     }
     if (isValid) {
-      alert("✅ Account created successfully!");
-      setName("");
-      setEmail("");
-      setPassword("");
-      setErrors({ name: "", email: "", password: "" });
-      if (typeof robot !== "undefined") robot.checked = false;
+      try {
+        const response = await authService.register(name, email, password);
+        if (response.success) {
+          setName("");
+          setEmail("");
+          setPassword("");
+          setErrors({ name: "", email: "", password: "" });
+          if (typeof robot !== "undefined") robot.checked = false;
+          navigate("/dashboard");
+        } else {
+          alert(response.message || "Registration failed");
+        }
+      } catch (error) {
+        console.error("Registration error:", error);
+        alert(error.response?.data?.message || "An error occurred during registration");
+      }
     }
   };
 
@@ -108,7 +120,7 @@ const SignUp = () => {
                 <label htmlFor="robot" className="text-sm text-black font-medium cursor-pointer">i am not a robot</label>
               </div>
 
-              <Link to={"/dashboard"}><button type="submit" className="w-full max-w-[400px] bg-[#4a2cf0] text-white py-2 rounded-md font-medium hover:bg-[#3a20d1] transition-all text-sm sm:text-base">create account</button></Link>
+              <button type="submit" className="w-full max-w-[400px] bg-[#4a2cf0] text-white py-2 rounded-md font-medium hover:bg-[#3a20d1] transition-all text-sm sm:text-base">create account</button>
 
               <p className="text-sm text-gray-800 text-center w-full max-w-[400px]">already have an account? <Link to="/login" className="font-bold text-black">log in</Link></p>
             </form>
