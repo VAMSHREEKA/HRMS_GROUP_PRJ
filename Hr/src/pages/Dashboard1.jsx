@@ -18,14 +18,14 @@ function Dashboard1() {
           <div className="p-4 sm:p-8">
             <h1 className="text-xl font-bold text-blue-600 mb-6">Dashboard</h1>
             <StatsCards />
-            <div className="mt-2">
+            <div className="mt-8">
               <EmployeesStatistics />
             </div>
-            <div className="mt-8 flex flex-col lg:flex-row items-start gap-6">
-              <div className="flex-1 w-full lg:max-w-lg">
+            <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="w-full">
                 <MeetingsUI />
               </div>
-              <div className="w-full lg:w-48 flex justify-center lg:justify-start">
+              <div className="w-full">
                 <EmpComposition />
               </div>
             </div>

@@ -2,7 +2,6 @@
 import React, { useMemo, useRef } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip } from "chart.js";
-import { FaMars, FaVenus } from "react-icons/fa";
 
 // Custom plugin to set background color to white
 const backgroundColorPlugin = {
@@ -19,7 +18,7 @@ const backgroundColorPlugin = {
 
 Chart.register(ArcElement, Tooltip, backgroundColorPlugin);
 
-export default function EmpComp({ male = 65, female = 35 }) {
+export default function EmpComp({ total = 856, malePercent = 65, femalePercent = 35 }) {
   const chartRef = useRef(null);
 
   const data = useMemo(
@@ -27,21 +26,21 @@ export default function EmpComp({ male = 65, female = 35 }) {
       labels: ["Male", "Female"],
       datasets: [
         {
-          data: [male, female],
-          backgroundColor: ["#27d9b1", "#3b2bea"],
-          borderColor: "#e8f5fb",
-          borderWidth: 2,
+          data: [malePercent, femalePercent],
+          backgroundColor: ["#3b82f6", "#10b981"],
+          borderColor: "#ffffff",
+          borderWidth: 3,
           hoverOffset: 6,
         },
       ],
     }),
-    [male, female]
+    [malePercent, femalePercent]
   );
 
   const options = useMemo(
     () => ({
-      cutout: "70%",
-      rotation: -Math.PI * 0.25,
+      cutout: "75%",
+      rotation: 0,
       plugins: {
         legend: { display: false },
         tooltip: { enabled: true },
@@ -52,22 +51,30 @@ export default function EmpComp({ male = 65, female = 35 }) {
   );
 
   return (
-    <div className="bg-white rounded-xl p-3.5 shadow-[0_8px_20px_rgba(2,6,23,0.06)] border border-[rgba(19,38,63,0.04)] w-full max-w-[340px] font-[Inter,system-ui,Arial,sans-serif] max-[420px]:w-[92%]">
-      <div className="text-[#155dfc] font-bold m-0 mb-3 ml-1.5 text-lg">Employees Composition</div>
+    <div className="bg-white rounded-xl p-6 shadow-md w-full h-full flex flex-col min-h-[300px]">
+      <h2 className="text-lg font-bold text-blue-600 mb-6">Employees Composition</h2>
 
-      <div className="relative h-60 flex items-center justify-center max-[420px]:h-[200px]">
-        <div className="absolute inset-3 flex items-center justify-center [&>canvas]:w-full! [&>canvas]:h-full!">
+      <div className="relative flex-1 flex items-center justify-center">
+        <div className="w-full h-full max-w-[250px] max-h-[250px] relative">
           <Doughnut ref={chartRef} data={data} options={options} />
+
+          {/* Center text showing total */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-gray-900">{total}</div>
+            </div>
+          </div>
         </div>
 
-        <div className="absolute inline-flex items-center gap-2 px-3 py-2 font-bold bg-white rounded-[10px] shadow-[0_6px_14px_rgba(19,38,63,0.06)] border border-[rgba(19,38,63,0.05)] whitespace-nowrap left-3.5 top-[22px] text-[#3b2bea] max-[420px]:px-2.5 max-[420px]:py-1.5 max-[420px]:text-sm" title="Female">
-          <FaVenus className="text-base" />
-          <span>{female}%</span>
+        {/* Legend indicators */}
+        <div className="absolute bottom-0 left-0 flex items-center gap-2 bg-white px-3 py-2 rounded-lg shadow-sm border border-gray-100">
+          <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+          <span className="text-xs font-medium text-gray-700">{malePercent}%</span>
         </div>
 
-        <div className="absolute inline-flex items-center gap-2 px-3 py-2 font-bold bg-white rounded-[10px] shadow-[0_6px_14px_rgba(19,38,63,0.06)] border border-[rgba(19,38,63,0.05)] whitespace-nowrap right-3 bottom-[26px] text-[#27d9b1] max-[420px]:px-2.5 max-[420px]:py-1.5 max-[420px]:text-sm" title="Male">
-          <FaMars className="text-base" />
-          <span>{male}%</span>
+        <div className="absolute top-0 right-0 flex items-center gap-2 bg-white px-3 py-2 rounded-lg shadow-sm border border-gray-100">
+          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          <span className="text-xs font-medium text-gray-700">{femalePercent}%</span>
         </div>
       </div>
     </div>

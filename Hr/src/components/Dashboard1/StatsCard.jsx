@@ -16,12 +16,11 @@ export default function StatsCards() {
           key={index}
           className="bg-white p-3 rounded-2xl shadow-md hover:shadow-xl hover:scale-[1.03] transition-transform duration-300 ease-in-out"
         >
-          <div className="dark:bg-zinc-700 flex justify-between items-center mb-1">
-            <h3 className="text-gray-500 text-xs font-medium dark:text-white">{stat.title}</h3>
+          <div className="flex justify-between items-center mb-1">
+            <h3 className="text-gray-500 text-xs font-medium">{stat.title}</h3>
             <span
-              className={`flex items-center text-xs font-semibold ${
-                stat.positive ? "text-green-500" : "text-red-500"
-              }`}
+              className={`flex items-center text-xs font-semibold ${stat.positive ? "text-green-500" : "text-red-500"
+                }`}
             >
               {stat.positive ? (
                 <ArrowUpRight size={14} />
@@ -31,7 +30,7 @@ export default function StatsCards() {
               {stat.change}
             </span>
           </div>
-          <p className=" dark:bg-zinc-700 text-2xl font-semibold text-gray-800">
+          <p className="text-2xl font-semibold text-gray-800">
             {stat.value.toLocaleString()}
           </p>
           <p className="text-xs text-gray-500 font-medium mt-0.5s">
