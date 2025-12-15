@@ -1,11 +1,32 @@
 import pool from "../db/db.js";
 
+// Create jobs table
+export const createJobsTable = async () => {
+  const query = `
+    CREATE TABLE IF NOT EXISTS jobs (
+      id SERIAL PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      location VARCHAR(255) NOT NULL,
+      experience VARCHAR(100) NOT NULL,
+      salary VARCHAR(100) NOT NULL,
+      description TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
+  try {
+    await pool.query(query);
+    console.log("✅ Jobs table created successfully");
+  } catch (error) {
+    console.error("❌ Error creating jobs table:", error);
+  }
+};
+
 // Create a new job
 export const createJob = (data) => {
-  const { title, location, experience, salary } = data;
+  const { title, location, experience, salary, description } = data;
   return pool.query(
-    "INSERT INTO jobs (title, location, experience, salary) VALUES ($1,$2,$3,$4) RETURNING *",
-    [title, location, experience, salary]
+    "INSERT INTO jobs (title, location, experience, salary, description) VALUES ($1,$2,$3,$4,$5) RETURNING *",
+    [title, location, experience, salary, description]
   );
 };
 

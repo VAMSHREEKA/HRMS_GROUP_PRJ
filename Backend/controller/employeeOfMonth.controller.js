@@ -138,3 +138,32 @@ export const deleteTeamMember = async (req, res) => {
         });
     }
 };
+
+// Delete employee of the month
+export const deleteEmployeeOfMonth = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedEmployee = await EmployeeOfMonthModel.deleteEmployeeOfMonth(id);
+
+        if (!deletedEmployee) {
+            return res.status(404).json({
+                success: false,
+                message: "Employee of the month not found",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Employee of the month and team deleted successfully",
+            data: deletedEmployee,
+        });
+    } catch (error) {
+        console.error("Error deleting employee of the month:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to delete employee of the month",
+            error: error.message,
+        });
+    }
+};

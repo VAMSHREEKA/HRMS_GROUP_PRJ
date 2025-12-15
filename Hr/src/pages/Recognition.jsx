@@ -18,7 +18,14 @@ export default function RecognitionPage() {
     const fetchUsers = async () => {
       try {
         const data = await getAllUsers();
-        setUsers(data);
+        if (data && data.users) {
+          setUsers(data.users);
+        } else if (Array.isArray(data)) {
+          setUsers(data);
+        } else {
+          console.warn("Unexpected users data structure:", data);
+          setUsers([]);
+        }
       } catch (err) {
         console.error("Failed to fetch users", err);
       }
@@ -176,14 +183,14 @@ export default function RecognitionPage() {
                 key={section}
                 onClick={() => setSelectedSection(section)}
                 className={`p-4 rounded-xl cursor-pointer border transition ${selectedSection === section
-                    ? "border-purple-500 bg-white shadow-sm"
-                    : "border-gray-200 bg-gray-50"
+                  ? "border-purple-500 bg-white shadow-sm"
+                  : "border-gray-200 bg-gray-50"
                   }`}
               >
                 <h3
                   className={`text-sm font-semibold ${selectedSection === section
-                      ? "text-purple-600"
-                      : "text-gray-900"
+                    ? "text-purple-600"
+                    : "text-gray-900"
                     }`}
                 >
                   {section === "recipient"
@@ -238,8 +245,8 @@ export default function RecognitionPage() {
                         <div>
                           <p
                             className={`text-xs font-semibold ${user.isCurrentUser
-                                ? "text-purple-700"
-                                : "text-gray-900"
+                              ? "text-purple-700"
+                              : "text-gray-900"
                               }`}
                           >
                             {user.name}

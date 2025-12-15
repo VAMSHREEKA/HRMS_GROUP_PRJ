@@ -42,10 +42,7 @@ function App() {
           <Route path='/employees' element={<ProtectedRoute><Layout><EmployeesPage /></Layout></ProtectedRoute>} />
           <Route path='/chat' element={<ProtectedRoute><Layout><Chat /></Layout></ProtectedRoute>} />
           <Route path='/settings' element={<ProtectedRoute><Layout><Settings /></Layout></ProtectedRoute>} />
-          <Route path="/recruitment" element={<ProtectedRoute><Layout><RecruitmentLayout /></Layout></ProtectedRoute>} />
-          <Route path="/recruitment/applications" element={<ProtectedRoute><Layout><Applications /></Layout></ProtectedRoute>} />
-          <Route path="/recruitment/interviews" element={<ProtectedRoute><Layout><Interviews /></Layout></ProtectedRoute>} />
-          <Route path="/recruitment/offers" element={<ProtectedRoute><Layout><Offers /></Layout></ProtectedRoute>} />
+          <Route path="/recruitment/*" element={<ProtectedRoute><Layout><RecruitmentLayout /></Layout></ProtectedRoute>} />
         </Routes>
       </div>
     </>
