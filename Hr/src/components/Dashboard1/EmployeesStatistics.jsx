@@ -60,6 +60,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
+import { useEffect, useState } from "react";
 
 const data = [
   { month: "Jan", hires: 25, attrition: 10, growth: 15 },
@@ -77,14 +78,21 @@ const data = [
 ];
 
 export default function HiringStatsChart() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Ensure we only render the responsive chart after mount to avoid zero width/height warnings
+    setMounted(true);
+  }, []);
   return (
     <div className="w-full h-[400px] bg-white p-6 rounded-xl shadow-md">
       <h2 className="text-lg font-semibold mb-6 text-blue-600">
         Monthly Hiring & Attrition Analysis
       </h2>
 
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
+      {mounted && (
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data}>
           <CartesianGrid stroke="#E6E6E6" strokeDasharray="3 3" />
 
           <XAxis dataKey="month" stroke="#333" />
@@ -120,8 +128,9 @@ export default function HiringStatsChart() {
             dot={{ r: 4 }}
             name="Net Growth"
           />
-        </LineChart>
-      </ResponsiveContainer>
+          </LineChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 }
